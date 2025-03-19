@@ -6,7 +6,7 @@ export class Index {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  getHello(): string {
+  get(): string {
     return this.appService.getHello();
   }
 }

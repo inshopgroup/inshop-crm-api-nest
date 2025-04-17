@@ -1,9 +1,9 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { ModulesService } from '../services/modules.service';
-import { CreateModuleDto } from '../dto/create-module.dto';
-import { UpdateModuleDto } from '../dto/update-module.dto';
+import { ModulesService } from '../../services/modules.service';
+import { CreateModuleDto } from '../../dto/create-module.dto';
+import { UpdateModuleDto } from '../../dto/update-module.dto';
 
-@Controller('modules')
+@Controller('admin/modules')
 export class ModulesController {
   constructor(private readonly modulesService: ModulesService) {}
 

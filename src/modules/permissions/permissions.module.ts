@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { RolesController } from './controllers/roles.controller';
-import { AuthController } from './controllers/auth.controller';
-import { GroupsController } from './controllers/groups.controller';
-import { ModulesController } from './controllers/modules.controller';
-import { UsersController } from './controllers/users.controller';
+import { RolesController } from './controllers/admin/roles.controller';
+import { AuthController } from './controllers/admin/auth.controller';
+import { GroupsController } from './controllers/admin/groups.controller';
+import { ModulesController } from './controllers/admin/modules.controller';
+import { UsersController } from './controllers/admin/users.controller';
 import { AuthService } from './services/auth.service';
 import { GroupsService } from './services/groups.service';
 import { ModulesService } from './services/modules.service';

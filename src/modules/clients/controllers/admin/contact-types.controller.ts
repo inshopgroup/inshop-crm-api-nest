@@ -1,9 +1,9 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { ContactTypesService } from '../services/contact-types.service';
-import { CreateContactTypeDto } from '../dto/create-contact-type.dto';
-import { UpdateContactTypeDto } from '../dto/update-contact-type.dto';
+import { ContactTypesService } from '../../services/contact-types.service';
+import { CreateContactTypeDto } from '../../dto/create-contact-type.dto';
+import { UpdateContactTypeDto } from '../../dto/update-contact-type.dto';
 
-@Controller('contact-types')
+@Controller('admin/contact-types')
 export class ContactTypesController {
   constructor(private readonly contactTypesService: ContactTypesService) {}
 

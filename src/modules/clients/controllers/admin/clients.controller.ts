@@ -31,8 +31,13 @@ export class ClientsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateClientDto: UpdateClientDto) {
-    return this.clientsService.update(+id, updateClientDto);
+  async update(
+    @Param('id') id: string,
+    @Body() updateClientDto: UpdateClientDto,
+  ) {
+    await this.clientsService.update(+id, updateClientDto);
+
+    return this.clientsService.findOne(+id);
   }
 
   @Delete(':id')

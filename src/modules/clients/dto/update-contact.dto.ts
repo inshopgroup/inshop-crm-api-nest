@@ -7,7 +7,7 @@ import ContactType from '../types/contacts.type';
 
 export class UpdateContactDto extends PartialType(CreateContactDto) {
   @IsString()
-  // @IsUnique(Contact, ['value', 'type'], { message: 'Value must be unique' })
+  @IsUnique(Contact, ['value', 'type'], { message: 'Value must be unique' })
   value: string;
 
   @IsString()

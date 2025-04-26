@@ -5,8 +5,7 @@ import { ClientsModule } from './modules/clients/clients.module';
 import { PermissionsModule } from './modules/permissions/permissions.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as process from 'node:process';
-import { Client } from './modules/clients/entities/client.entity';
-import { Contact } from './modules/clients/entities/contact.entity';
+import { IsUniqueConstraint } from './modules/core/validators/is-unique.decorator';
 
 @Module({
   imports: [
@@ -23,12 +22,12 @@ import { Contact } from './modules/clients/entities/contact.entity';
       username: process.env.DATABASE_USER,
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_NAME,
-      entities: [Client, Contact],
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: !!process.env.DATABASE_SYNCHRONIZE,
       autoLoadEntities: true,
     }),
   ],
   controllers: [],
-  providers: [],
+  providers: [IsUniqueConstraint],
 })
 export class AppModule {}

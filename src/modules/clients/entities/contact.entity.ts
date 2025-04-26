@@ -1,1 +1,29 @@
-export class Contact {}
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinColumn,
+  Unique,
+} from 'typeorm';
+import { Client } from './client.entity';
+
+@Entity()
+@Unique(['value', 'type'])
+export class Contact {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @ManyToOne(() => Client)
+  @JoinColumn({ name: 'clientId' })
+  client: Client;
+
+  @Column()
+  value: string;
+
+  @Column({ type: 'enum', enum: ['email', 'phone'] })
+  type: string;
+
+  @Column({ default: false })
+  isActive: boolean;
+}

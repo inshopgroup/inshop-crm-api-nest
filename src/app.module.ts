@@ -5,6 +5,8 @@ import { ClientsModule } from './modules/clients/clients.module';
 import { PermissionsModule } from './modules/permissions/permissions.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as process from 'node:process';
+import { Client } from './modules/clients/entities/client.entity';
+import { Contact } from './modules/clients/entities/contact.entity';
 
 @Module({
   imports: [
@@ -21,8 +23,9 @@ import * as process from 'node:process';
       username: process.env.DATABASE_USER,
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_NAME,
-      entities: [],
+      entities: [Client, Contact],
       synchronize: !!process.env.DATABASE_SYNCHRONIZE,
+      autoLoadEntities: true,
     }),
   ],
   controllers: [],

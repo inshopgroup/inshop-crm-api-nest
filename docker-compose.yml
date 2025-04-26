@@ -1,0 +1,14 @@
+services:
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+    volumes:
+      - db-data:/var/lib/postgresql/data:rw
+    ports:
+      - ${DATABASE_PORT}:5432
+
+volumes:
+  db-data: {}

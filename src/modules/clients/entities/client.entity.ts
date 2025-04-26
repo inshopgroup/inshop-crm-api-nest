@@ -15,7 +15,7 @@ export class Client {
   @Column()
   password: string;
 
-  @Column({ default: false })
+  @Column({ default: true })
   isActive: boolean;
 
   @OneToMany(() => Contact, (contact) => contact.client)

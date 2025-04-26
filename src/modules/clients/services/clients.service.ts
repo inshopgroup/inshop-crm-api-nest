@@ -23,7 +23,10 @@ export class ClientsService {
   }
 
   findOne(id: number) {
-    return this.clientsRepository.findOneBy({ id });
+    return this.clientsRepository.findOne({
+      where: { id },
+      relations: ['contacts'],
+    });
   }
 
   update(id: number, updateClientDto: UpdateClientDto) {

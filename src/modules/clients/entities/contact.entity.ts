@@ -13,7 +13,7 @@ export class Contact {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Client)
+  @ManyToOne(() => Client, { nullable: false })
   client: Client;
 
   @Column()
@@ -22,6 +22,6 @@ export class Contact {
   @Column({ type: 'enum', enum: ['email', 'phone'] })
   type: string;
 
-  @Column({ default: false })
+  @Column({ default: true })
   isActive: boolean;
 }

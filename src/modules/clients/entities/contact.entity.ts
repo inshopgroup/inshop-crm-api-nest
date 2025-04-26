@@ -3,7 +3,6 @@ import {
   Column,
   PrimaryGeneratedColumn,
   ManyToOne,
-  JoinColumn,
   Unique,
 } from 'typeorm';
 import { Client } from './client.entity';
@@ -15,7 +14,6 @@ export class Contact {
   id: number;
 
   @ManyToOne(() => Client)
-  @JoinColumn({ name: 'clientId' })
   client: Client;
 
   @Column()

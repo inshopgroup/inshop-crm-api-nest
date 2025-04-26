@@ -1,1 +1,5 @@
-export class CreateContactDto {}
+export class CreateContactDto {
+  clientId: number;
+  value: string;
+  type: 'email' | 'phone';
+}

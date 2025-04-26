@@ -16,8 +16,8 @@ export class IsUniqueConstraint implements ValidatorConstraintInterface {
   constructor(
     @InjectDataSource()
     private readonly dataSource: DataSource,
-    @InjectRepository(Client)
-    private clientsRepository: Repository<Client>,
+    // @InjectRepository(Client)
+    // private clientsRepository: Repository<Client>,
   ) {}
 
   async validate(_value: unknown, args: ValidationArguments): Promise<boolean> {
@@ -27,7 +27,7 @@ export class IsUniqueConstraint implements ValidatorConstraintInterface {
     console.log(
       'IsUniqueConstraint validate',
       this.dataSource,
-      this.clientsRepository,
+      // this.clientsRepository,
     );
     const repository = this.dataSource.getRepository(entity);
 

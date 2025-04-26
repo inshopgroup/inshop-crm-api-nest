@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  ValidationPipe,
 } from '@nestjs/common';
 import { ClientsService } from '../../services/clients.service';
 import { CreateClientDto } from '../../dto/create-client.dto';
@@ -16,7 +17,7 @@ export class ClientsController {
   constructor(private readonly clientsService: ClientsService) {}
 
   @Post()
-  create(@Body() createClientDto: CreateClientDto) {
+  create(@Body(new ValidationPipe()) createClientDto: CreateClientDto) {
     return this.clientsService.create(createClientDto);
   }
 
@@ -33,7 +34,7 @@ export class ClientsController {
   @Patch(':id')
   async update(
     @Param('id') id: string,
-    @Body() updateClientDto: UpdateClientDto,
+    @Body(new ValidationPipe()) updateClientDto: UpdateClientDto,
   ) {
     await this.clientsService.update(+id, updateClientDto);
 

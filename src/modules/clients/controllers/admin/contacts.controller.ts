@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  ValidationPipe,
 } from '@nestjs/common';
 import { ContactsService } from '../../services/contacts.service';
 import { CreateContactDto } from '../../dto/create-contact.dto';
@@ -16,7 +17,7 @@ export class ContactsController {
   constructor(private readonly contactsService: ContactsService) {}
 
   @Post()
-  create(@Body() createContactDto: CreateContactDto) {
+  create(@Body(new ValidationPipe()) createContactDto: CreateContactDto) {
     return this.contactsService.create(createContactDto);
   }
 
@@ -33,7 +34,7 @@ export class ContactsController {
   @Patch(':id')
   async update(
     @Param('id') id: string,
-    @Body() updateContactDto: UpdateContactDto,
+    @Body(new ValidationPipe()) updateContactDto: UpdateContactDto,
   ) {
     await this.contactsService.update(+id, updateContactDto);
 

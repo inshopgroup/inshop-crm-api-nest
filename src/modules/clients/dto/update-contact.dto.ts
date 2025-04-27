@@ -6,11 +6,12 @@ import { Contact } from '../entities/contact.entity';
 import ContactType from '../types/contacts.type';
 
 export class UpdateContactDto extends PartialType(CreateContactDto) {
-  @IsString()
-  @IsUnique(Contact, ['value', 'type'], { message: 'Value must be unique' })
-  value: string;
+  id?: number;
 
   @IsString()
+  value: string;
+
+  @IsUnique(Contact, ['type', 'value'], { message: 'Value must be unique' })
   @IsEnum(ContactType)
   type: ContactType;
 }

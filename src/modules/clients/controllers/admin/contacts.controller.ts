@@ -11,13 +11,14 @@ import {
 import { ContactsService } from '../../services/contacts.service';
 import { CreateContactDto } from '../../dto/create-contact.dto';
 import { UpdateContactDto } from '../../dto/update-contact.dto';
+import { IdPipe } from '../../../core/transformers/id.pipe';
 
 @Controller('admin/contacts')
 export class ContactsController {
   constructor(private readonly contactsService: ContactsService) {}
 
   @Post()
-  create(@Body(new ValidationPipe()) createContactDto: CreateContactDto) {
+  create(@Body(ValidationPipe) createContactDto: CreateContactDto) {
     return this.contactsService.create(createContactDto);
   }
 
@@ -34,7 +35,7 @@ export class ContactsController {
   @Patch(':id')
   async update(
     @Param('id') id: string,
-    @Body(new ValidationPipe()) updateContactDto: UpdateContactDto,
+    @Body(IdPipe, ValidationPipe) updateContactDto: UpdateContactDto,
   ) {
     await this.contactsService.update(+id, updateContactDto);
 

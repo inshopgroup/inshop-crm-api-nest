@@ -6,9 +6,8 @@ import {
   ValidationArguments,
 } from 'class-validator';
 import { Injectable, Type } from '@nestjs/common';
-import { DataSource, Repository } from 'typeorm';
-import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
-import { Client } from '../../clients/entities/client.entity';
+import { DataSource, Not } from 'typeorm';
+import { InjectDataSource } from '@nestjs/typeorm';
 
 @ValidatorConstraint({ async: true })
 @Injectable()
@@ -16,28 +15,23 @@ export class IsUniqueConstraint implements ValidatorConstraintInterface {
   constructor(
     @InjectDataSource()
     private readonly dataSource: DataSource,
-    // @InjectRepository(Client)
-    // private clientsRepository: Repository<Client>,
   ) {}
 
   async validate(_value: unknown, args: ValidationArguments): Promise<boolean> {
-    const [entity, properties] = args.constraints as [Type<any>, string[]];
-    const object = args.object;
+    type EntityType = { [key: string]: unknown };
 
-    console.log(
-      'IsUniqueConstraint validate',
-      this.dataSource,
-      // this.clientsRepository,
-    );
+    const [entity, properties] = args.constraints as [Type<any>, string[]];
+    const object = args.object as EntityType;
     const repository = this.dataSource.getRepository(entity);
 
-    const where = properties.map((property) => ({
-      [property]: object[property] as string,
-    }));
+    const where: { [key: string]: unknown } = {};
+    properties.forEach((property) => {
+      where[property] = object[property];
+    });
 
-    // if (object.id) {
-    //   where.push({ id: { Not(object.id as number) } });
-    // }
+    if (object.id) {
+      where.id = Not(object.id);
+    }
 
     const record: unknown = await repository.findOne({ where });
 
@@ -45,10 +39,7 @@ export class IsUniqueConstraint implements ValidatorConstraintInterface {
   }
 
   defaultMessage(validationArguments: ValidationArguments): string {
-    const [entity, properties] = validationArguments.constraints as [
-      unknown,
-      string[],
-    ];
+    const [properties] = validationArguments.constraints as [string[]];
 
     return `${properties.join(', ')} must be unique.`;
   }

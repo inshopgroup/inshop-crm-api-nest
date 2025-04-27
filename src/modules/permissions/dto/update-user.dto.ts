@@ -4,6 +4,8 @@ import { Group } from '../entities/group.entity';
 import { IsBoolean, IsString } from 'class-validator';
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {
+  id?: number;
+
   @IsString()
   name: string;
 

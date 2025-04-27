@@ -4,6 +4,8 @@ import { Module } from '../entities/module.entity';
 import { IsString } from 'class-validator';
 
 export class UpdateRoleDto extends PartialType(CreateRoleDto) {
+  id?: number;
+
   @IsString()
   name: string;
 

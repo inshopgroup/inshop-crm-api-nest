@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ValidationPipe,
+} from '@nestjs/common';
 import { ModulesService } from '../../services/modules.service';
 import { CreateModuleDto } from '../../dto/create-module.dto';
 import { UpdateModuleDto } from '../../dto/update-module.dto';

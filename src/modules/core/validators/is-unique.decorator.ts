@@ -3,11 +3,13 @@ import {
   ValidationOptions,
   ValidatorConstraint,
   ValidatorConstraintInterface,
-  ValidationArguments, validateSync,
+  ValidationArguments,
+  validateSync,
 } from 'class-validator';
 import { Injectable, Type } from '@nestjs/common';
 import { DataSource, Not } from 'typeorm';
 import { InjectDataSource } from '@nestjs/typeorm';
+import EntityType from '../../clients/types/entity.type';
 
 @ValidatorConstraint({ async: true })
 @Injectable()
@@ -18,8 +20,6 @@ export class IsUniqueConstraint implements ValidatorConstraintInterface {
   ) {}
 
   async validate(_value: unknown, args: ValidationArguments): Promise<boolean> {
-    type EntityType = { [key: string]: unknown };
-
     const [entity, properties] = args.constraints as [Type<any>, string[]];
     const object = args.object as EntityType;
     const repository = this.dataSource.getRepository(entity);

@@ -3,7 +3,7 @@ import {
   ValidationOptions,
   ValidatorConstraint,
   ValidatorConstraintInterface,
-  ValidationArguments,
+  ValidationArguments, validateSync,
 } from 'class-validator';
 import { Injectable, Type } from '@nestjs/common';
 import { DataSource, Not } from 'typeorm';
@@ -23,6 +23,16 @@ export class IsUniqueConstraint implements ValidatorConstraintInterface {
     const [entity, properties] = args.constraints as [Type<any>, string[]];
     const object = args.object as EntityType;
     const repository = this.dataSource.getRepository(entity);
+
+    // Run synchronous validation for the object
+    const validationErrors = validateSync(object, {
+      skipMissingProperties: true,
+    });
+
+    if (validationErrors.length > 0) {
+      // Skip uniqueness check if other validations fail
+      return false;
+    }
 
     const where: { [key: string]: unknown } = {};
     properties.forEach((property) => {

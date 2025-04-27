@@ -11,7 +11,7 @@ export class UpdateContactDto extends PartialType(CreateContactDto) {
   @IsString()
   value: string;
 
-  @IsUnique(Contact, ['type', 'value'], { message: 'Value must be unique' })
   @IsEnum(ContactType)
+  @IsUnique(Contact, ['type', 'value'], { message: 'Value must be unique' })
   type: ContactType;
 }

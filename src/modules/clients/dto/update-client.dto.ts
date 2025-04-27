@@ -10,8 +10,8 @@ export class UpdateClientDto extends PartialType(CreateClientDto) {
   @IsString()
   name: string;
 
-  @IsUnique(Client, ['email'], { message: 'Email must be unique' })
   @IsString()
+  @IsUnique(Client, ['email'], { message: 'Email must be unique' })
   email: string;
 
   @IsString()

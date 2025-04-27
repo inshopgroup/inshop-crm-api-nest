@@ -1,14 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe } from '@nestjs/common';
 import { ModulesService } from '../../services/modules.service';
 import { CreateModuleDto } from '../../dto/create-module.dto';
 import { UpdateModuleDto } from '../../dto/update-module.dto';
+import { IdPipe } from '../../../core/transformers/id.pipe';
 
 @Controller('admin/modules')
 export class ModulesController {
   constructor(private readonly modulesService: ModulesService) {}
 
   @Post()
-  create(@Body() createModuleDto: CreateModuleDto) {
+  create(@Body(ValidationPipe) createModuleDto: CreateModuleDto) {
     return this.modulesService.create(createModuleDto);
   }
 
@@ -23,8 +24,13 @@ export class ModulesController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateModuleDto: UpdateModuleDto) {
-    return this.modulesService.update(+id, updateModuleDto);
+  async update(
+    @Param('id') id: string,
+    @Body(IdPipe, ValidationPipe) updateModuleDto: UpdateModuleDto,
+  ) {
+    await this.modulesService.update(+id, updateModuleDto);
+
+    return this.modulesService.findOne(+id);
   }
 
   @Delete(':id')

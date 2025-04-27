@@ -9,8 +9,14 @@ import { GroupsService } from './services/groups.service';
 import { ModulesService } from './services/modules.service';
 import { RolesService } from './services/roles.service';
 import { UsersService } from './services/users.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Group } from './entities/group.entity';
+import { Role } from './entities/role.entity';
+import { User } from './entities/user.entity';
+import { Module as ModuleEntity } from './entities/module.entity';
 
 @Module({
+  imports: [TypeOrmModule.forFeature([Group, ModuleEntity, Role, User])],
   controllers: [
     AuthController,
     GroupsController,

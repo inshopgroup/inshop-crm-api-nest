@@ -1,14 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe } from '@nestjs/common';
 import { RolesService } from '../../services/roles.service';
 import { CreateRoleDto } from '../../dto/create-role.dto';
 import { UpdateRoleDto } from '../../dto/update-role.dto';
+import { IdPipe } from '../../../core/transformers/id.pipe';
 
 @Controller('admin/roles')
 export class RolesController {
   constructor(private readonly rolesService: RolesService) {}
 
   @Post()
-  create(@Body() createRoleDto: CreateRoleDto) {
+  create(@Body(ValidationPipe) createRoleDto: CreateRoleDto) {
     return this.rolesService.create(createRoleDto);
   }
 
@@ -23,8 +24,13 @@ export class RolesController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRoleDto: UpdateRoleDto) {
-    return this.rolesService.update(+id, updateRoleDto);
+  async update(
+    @Param('id') id: string,
+    @Body(IdPipe, ValidationPipe) updateRoleDto: UpdateRoleDto,
+  ) {
+    await this.rolesService.update(+id, updateRoleDto);
+
+    return this.rolesService.findOne(+id);
   }
 
   @Delete(':id')

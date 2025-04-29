@@ -12,18 +12,26 @@ export class ContactsService {
     private contactRepository: Repository<Contact>,
   ) {}
 
-  create(createContactDto: CreateContactDto) {
-    const contact = this.contactRepository.create(createContactDto);
+  create(clientId: number, createContactDto: CreateContactDto) {
+    const newContact = {
+      ...createContactDto,
+      client: clientId,
+    } as unknown as Contact;
+
+    const contact = this.contactRepository.create(newContact);
 
     return this.contactRepository.save(contact);
   }
 
-  findAll() {
-    return this.contactRepository.find();
+  findAll(clientId: number) {
+    return this.contactRepository.findBy({ client: { id: clientId } });
   }
 
-  findOne(id: number): Promise<Contact | null> {
-    return this.contactRepository.findOneBy({ id });
+  findOne(clientId: number, id: number): Promise<Contact | null> {
+    return this.contactRepository.findOne({
+      where: { id, client: { id: clientId } },
+      relations: ['client'],
+    });
   }
 
   update(id: number, updateContactDto: UpdateContactDto) {

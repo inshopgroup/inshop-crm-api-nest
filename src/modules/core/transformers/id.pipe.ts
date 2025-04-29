@@ -14,10 +14,11 @@ export class IdPipe implements PipeTransform {
   constructor(@Inject(REQUEST) protected readonly request: Request) {}
 
   transform(value: EntityType, metadata: ArgumentMetadata): any {
-    if (metadata.type === 'body' && value) {
+    if (metadata.type === 'body') {
       const id = this.request.params?.id;
+
       if (id) {
-        value.id = +id; // Assuming id should be a number in the DTO
+        value.id = +id;
       }
     }
 

@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   ValidationPipe,
+  NotFoundException,
 } from '@nestjs/common';
 import { ClientsService } from '../../services/clients.service';
 import { CreateClientDto } from '../../dto/create-client.dto';
@@ -28,8 +29,14 @@ export class ClientsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.clientsService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    const client = await this.clientsService.findOne(+id);
+
+    if (!client) {
+      throw new NotFoundException('Client not found');
+    }
+
+    return client;
   }
 
   @Patch(':id')
@@ -37,13 +44,25 @@ export class ClientsController {
     @Param('id') id: string,
     @Body(IdPipe, ValidationPipe) updateClientDto: UpdateClientDto,
   ) {
+    const client = await this.clientsService.findOne(+id);
+
+    if (!client) {
+      throw new NotFoundException('Client not found');
+    }
+
     await this.clientsService.update(+id, updateClientDto);
 
     return this.clientsService.findOne(+id);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
+    const client = await this.clientsService.findOne(+id);
+
+    if (!client) {
+      throw new NotFoundException('Client not found');
+    }
+
     return this.clientsService.remove(+id);
   }
 }

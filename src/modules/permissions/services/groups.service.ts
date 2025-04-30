@@ -20,18 +20,18 @@ export class GroupsService {
 
   findAll() {
     return this.groupsRepository.find({
-      relations: {
-        roles: true,
-      },
+      // relations: {
+      //   roles: true,
+      // },
     });
   }
 
   findOne(id: number) {
     return this.groupsRepository.findOne({
       where: { id },
-      relations: {
-        roles: true,
-      },
+      // relations: {
+      //   roles: true,
+      // },
     });
   }
 

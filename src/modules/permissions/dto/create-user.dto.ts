@@ -1,6 +1,8 @@
 import { Group } from '../entities/group.entity';
 import { IsBoolean, IsEmail, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { IsUnique } from '../../core/validators/is-unique.decorator';
+import { User } from '../entities/user.entity';
 
 export class CreateUserDto {
   @IsString()
@@ -8,6 +10,7 @@ export class CreateUserDto {
   name: string;
 
   @IsEmail()
+  @IsUnique(User, ['email'], { message: 'Email must be unique' })
   @ApiProperty()
   email: string;
 
@@ -15,7 +18,8 @@ export class CreateUserDto {
   @ApiProperty()
   password: string;
 
-  groups: Group[];
+  @ApiProperty()
+  group: Group;
 
   @IsBoolean()
   @ApiProperty()

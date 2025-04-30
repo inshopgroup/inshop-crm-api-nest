@@ -20,14 +20,18 @@ export class UsersService {
 
   findAll() {
     return this.usersRepository.find({
-      relations: ['roles', 'groups'],
+      relations: {
+        group: true,
+      },
     });
   }
 
   findOne(id: number) {
     return this.usersRepository.findOne({
       where: { id },
-      relations: ['roles', 'groups'],
+      relations: {
+        group: true,
+      },
     });
   }
 

@@ -31,7 +31,7 @@ export class GroupsController {
 
   @Get(':id')
   findOne(@Param('id', ObjectPipe(Group)) group: Group) {
-    return this.groupsService.findOne(group.id);
+    return group;
   }
 
   @Patch(':id')

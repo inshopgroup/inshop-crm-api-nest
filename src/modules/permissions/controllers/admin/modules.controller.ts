@@ -30,7 +30,9 @@ export class ModulesController {
   }
 
   @Get(':id')
-  findOne(@Param('id', ObjectPipe(ModuleEntity)) module: ModuleEntity) {
+  findOne(
+    @Param('id', ObjectPipe(ModuleEntity, ['roles'])) module: ModuleEntity,
+  ) {
     return module;
   }
 

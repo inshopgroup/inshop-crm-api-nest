@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator';
+import { IsEmail, IsString } from 'class-validator';
 import { IsUnique } from '../../core/validators/is-unique.decorator';
 import { Client } from '../entities/client.entity';
 import { ApiProperty } from '@nestjs/swagger';
@@ -8,7 +8,7 @@ export class CreateClientDto {
   @ApiProperty()
   name: string;
 
-  @IsString()
+  @IsEmail()
   @IsUnique(Client, ['email'], { message: 'Email must be unique' })
   @ApiProperty()
   email: string;

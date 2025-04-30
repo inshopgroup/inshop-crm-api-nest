@@ -1,0 +1,54 @@
+import {
+  registerDecorator,
+  ValidationOptions,
+  ValidatorConstraint,
+  ValidatorConstraintInterface,
+  ValidationArguments,
+} from 'class-validator';
+import { Injectable, Type } from '@nestjs/common';
+import { DataSource } from 'typeorm';
+import { InjectDataSource } from '@nestjs/typeorm';
+
+@ValidatorConstraint({ async: true })
+@Injectable()
+export class ExistsConstraint implements ValidatorConstraintInterface {
+  constructor(
+    @InjectDataSource()
+    private readonly dataSource: DataSource,
+  ) {}
+
+  async validate(
+    value: { id: number },
+    args: ValidationArguments,
+  ): Promise<boolean> {
+    const [entity] = args.constraints as [Type<any>];
+    const repository = this.dataSource.getRepository(entity);
+
+    const record: unknown = await repository.findOne({
+      where: { id: value.id },
+    });
+
+    return !!record;
+  }
+
+  defaultMessage(validationArguments: ValidationArguments): string {
+    const [entity] = validationArguments.constraints as [string];
+
+    return `${entity} not exists.`;
+  }
+}
+
+export function Exists(
+  entity: any,
+  options?: ValidationOptions,
+): (object: object, propertyName: string) => void {
+  return function (object: object, propertyName: string): void {
+    registerDecorator({
+      target: object.constructor,
+      propertyName,
+      options,
+      constraints: [entity],
+      validator: ExistsConstraint,
+    });
+  };
+}

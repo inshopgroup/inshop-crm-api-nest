@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import * as process from 'node:process';
 import { IsUniqueConstraint } from './modules/core/validators/is-unique.decorator';
 import { IdPipe } from './modules/core/transformers/id.pipe';
+import { ExistsConstraint } from './modules/core/validators/exists.decorator';
 
 @Module({
   imports: [
@@ -28,6 +29,6 @@ import { IdPipe } from './modules/core/transformers/id.pipe';
     }),
   ],
   controllers: [],
-  providers: [IsUniqueConstraint, IdPipe],
+  providers: [IsUniqueConstraint, ExistsConstraint, IdPipe],
 })
 export class AppModule {}

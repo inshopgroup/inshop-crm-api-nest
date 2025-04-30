@@ -13,6 +13,9 @@ import { ContactsService } from '../../services/contacts.service';
 import { CreateContactDto } from '../../dto/create-contact.dto';
 import { UpdateContactDto } from '../../dto/update-contact.dto';
 import { IdPipe } from '../../../core/transformers/id.pipe';
+import { ObjectPipe } from '../../../core/transformers/parse-object.pipe';
+import { Client } from '../../entities/client.entity';
+import { Contact } from '../../entities/contact.entity';
 
 @Controller('admin/clients/:clientId/contacts')
 export class ContactsController {
@@ -20,22 +23,23 @@ export class ContactsController {
 
   @Post()
   create(
-    @Param('clientId') clientId: string,
+    @Param('clientId', ObjectPipe(Client)) client: Client,
     @Body(ValidationPipe) createContactDto: CreateContactDto,
   ) {
-    return this.contactsService.create(+clientId, createContactDto);
+    return this.contactsService.create(client.id, createContactDto);
   }
 
   @Get()
-  findAll(@Param('clientId') clientId: string) {
-    return this.contactsService.findAll(+clientId);
+  findAll(@Param('clientId', ObjectPipe(Client)) client: Client) {
+    return this.contactsService.findAll(client.id);
   }
 
   @Get(':id')
-  async findOne(@Param('clientId') clientId: string, @Param('id') id: string) {
-    const contact = await this.contactsService.findOne(+clientId, +id);
-
-    if (!contact) {
+  findOne(
+    @Param('clientId', ObjectPipe(Client)) client: Client,
+    @Param('id', ObjectPipe(Contact, ['client'])) contact: Contact,
+  ) {
+    if (contact.client.id !== client.id) {
       throw new NotFoundException('Contact not found');
     }
 
@@ -44,29 +48,28 @@ export class ContactsController {
 
   @Patch(':id')
   async update(
-    @Param('clientId') clientId: string,
-    @Param('id') id: string,
+    @Param('clientId', ObjectPipe(Client)) client: Client,
+    @Param('id', ObjectPipe(Contact, ['client'])) contact: Contact,
     @Body(IdPipe, ValidationPipe) updateContactDto: UpdateContactDto,
   ) {
-    const contact = await this.contactsService.findOne(+clientId, +id);
-
-    if (!contact) {
+    if (contact.client.id !== client.id) {
       throw new NotFoundException('Contact not found');
     }
 
-    await this.contactsService.update(+id, updateContactDto);
+    await this.contactsService.update(contact.id, updateContactDto);
 
-    return this.contactsService.findOne(+clientId, +id);
+    return;
   }
 
   @Delete(':id')
-  async remove(@Param('clientId') clientId: string, @Param('id') id: string) {
-    const contact = await this.contactsService.findOne(+clientId, +id);
-
-    if (!contact) {
+  remove(
+    @Param('clientId', ObjectPipe(Client)) client: Client,
+    @Param('id', ObjectPipe(Contact, ['client'])) contact: Contact,
+  ) {
+    if (contact.client.id !== client.id) {
       throw new NotFoundException('Contact not found');
     }
 
-    return this.contactsService.remove(+id);
+    return this.contactsService.remove(contact.id);
   }
 }

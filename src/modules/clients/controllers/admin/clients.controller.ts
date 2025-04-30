@@ -7,12 +7,13 @@ import {
   Param,
   Delete,
   ValidationPipe,
-  NotFoundException,
 } from '@nestjs/common';
 import { ClientsService } from '../../services/clients.service';
 import { CreateClientDto } from '../../dto/create-client.dto';
 import { UpdateClientDto } from '../../dto/update-client.dto';
 import { IdPipe } from '../../../core/transformers/id.pipe';
+import { Client } from '../../entities/client.entity';
+import { ObjectPipe } from '../../../core/transformers/parse-object.pipe';
 
 @Controller('admin/clients')
 export class ClientsController {
@@ -29,40 +30,22 @@ export class ClientsController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
-    const client = await this.clientsService.findOne(+id);
-
-    if (!client) {
-      throw new NotFoundException('Client not found');
-    }
-
+  findOne(@Param('id', ObjectPipe(Client)) client: Client) {
     return client;
   }
 
   @Patch(':id')
   async update(
-    @Param('id') id: string,
+    @Param('id', ObjectPipe(Client)) client: Client,
     @Body(IdPipe, ValidationPipe) updateClientDto: UpdateClientDto,
   ) {
-    const client = await this.clientsService.findOne(+id);
+    await this.clientsService.update(client.id, updateClientDto);
 
-    if (!client) {
-      throw new NotFoundException('Client not found');
-    }
-
-    await this.clientsService.update(+id, updateClientDto);
-
-    return this.clientsService.findOne(+id);
+    return;
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string) {
-    const client = await this.clientsService.findOne(+id);
-
-    if (!client) {
-      throw new NotFoundException('Client not found');
-    }
-
-    return this.clientsService.remove(+id);
+  async remove(@Param('id', ObjectPipe(Client)) client: Client) {
+    return this.clientsService.remove(client.id);
   }
 }

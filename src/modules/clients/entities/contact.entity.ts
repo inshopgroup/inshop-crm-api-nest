@@ -13,7 +13,7 @@ export class Contact {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Client, { nullable: false })
+  @ManyToOne(() => Client, { nullable: false, eager: false })
   client: Client;
 
   @Column()

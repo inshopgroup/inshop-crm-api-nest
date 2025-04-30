@@ -46,6 +46,8 @@ export class ClientsController {
 
   @Delete(':id')
   async remove(@Param('id', ObjectPipe(Client)) client: Client) {
-    return this.clientsService.remove(client.id);
+    await this.clientsService.remove(client.id);
+
+    return;
   }
 }

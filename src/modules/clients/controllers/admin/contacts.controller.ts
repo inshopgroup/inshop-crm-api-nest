@@ -62,7 +62,7 @@ export class ContactsController {
   }
 
   @Delete(':id')
-  remove(
+  async remove(
     @Param('clientId', ObjectPipe(Client)) client: Client,
     @Param('id', ObjectPipe(Contact, ['client'])) contact: Contact,
   ) {
@@ -70,6 +70,8 @@ export class ContactsController {
       throw new NotFoundException('Contact not found');
     }
 
-    return this.contactsService.remove(contact.id);
+    await this.contactsService.remove(contact.id);
+
+    return;
   }
 }

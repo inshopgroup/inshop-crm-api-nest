@@ -12,6 +12,8 @@ import { ModulesService } from '../../services/modules.service';
 import { CreateModuleDto } from '../../dto/create-module.dto';
 import { UpdateModuleDto } from '../../dto/update-module.dto';
 import { IdPipe } from '../../../core/transformers/id.pipe';
+import { ObjectPipe } from '../../../core/transformers/parse-object.pipe';
+import { Module as ModuleEntity } from '../../../permissions/entities/module.entity';
 
 @Controller('admin/modules')
 export class ModulesController {
@@ -28,22 +30,24 @@ export class ModulesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.modulesService.findOne(+id);
+  findOne(@Param('id', ObjectPipe(ModuleEntity)) module: ModuleEntity) {
+    return module;
   }
 
   @Patch(':id')
   async update(
-    @Param('id') id: string,
+    @Param('id', ObjectPipe(ModuleEntity)) module: ModuleEntity,
     @Body(IdPipe, ValidationPipe) updateModuleDto: UpdateModuleDto,
   ) {
-    await this.modulesService.update(+id, updateModuleDto);
+    await this.modulesService.update(module.id, updateModuleDto);
 
-    return this.modulesService.findOne(+id);
+    return;
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.modulesService.remove(+id);
+  async remove(@Param('id', ObjectPipe(ModuleEntity)) module: ModuleEntity) {
+    await this.modulesService.remove(module.id);
+
+    return;
   }
 }

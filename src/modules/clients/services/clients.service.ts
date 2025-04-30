@@ -25,7 +25,9 @@ export class ClientsService {
   findOne(id: number) {
     return this.clientsRepository.findOne({
       where: { id },
-      relations: ['contacts'],
+      relations: {
+        contacts: true,
+      },
     });
   }
 

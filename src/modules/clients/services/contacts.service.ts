@@ -30,7 +30,9 @@ export class ContactsService {
   findOne(clientId: number, id: number): Promise<Contact | null> {
     return this.contactRepository.findOne({
       where: { id, client: { id: clientId } },
-      relations: ['client'],
+      relations: {
+        client: true,
+      },
     });
   }
 

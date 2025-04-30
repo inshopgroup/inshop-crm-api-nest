@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Group } from './group.entity';
 
 @Entity()
@@ -18,6 +18,6 @@ export class User {
   @Column({ default: true })
   isActive: boolean;
 
-  @ManyToMany(() => Group)
-  groups: Group[];
+  @ManyToOne(() => Group, { nullable: false, eager: false })
+  group: Group;
 }

@@ -12,6 +12,8 @@ import { GroupsService } from '../../services/groups.service';
 import { CreateGroupDto } from '../../dto/create-group.dto';
 import { UpdateGroupDto } from '../../dto/update-group.dto';
 import { IdPipe } from '../../../core/transformers/id.pipe';
+import { ObjectPipe } from '../../../core/transformers/parse-object.pipe';
+import { Group } from '../../entities/group.entity';
 
 @Controller('admin/groups')
 export class GroupsController {
@@ -28,22 +30,24 @@ export class GroupsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.groupsService.findOne(+id);
+  findOne(@Param('id', ObjectPipe(Group)) group: Group) {
+    return this.groupsService.findOne(group.id);
   }
 
   @Patch(':id')
   async update(
-    @Param('id') id: string,
+    @Param('id', ObjectPipe(Group)) group: Group,
     @Body(IdPipe, ValidationPipe) updateGroupDto: UpdateGroupDto,
   ) {
-    await this.groupsService.update(+id, updateGroupDto);
+    await this.groupsService.update(group.id, updateGroupDto);
 
-    return this.groupsService.findOne(+id);
+    return;
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.groupsService.remove(+id);
+  async remove(@Param('id', ObjectPipe(Group)) group: Group) {
+    await this.groupsService.remove(group.id);
+
+    return;
   }
 }

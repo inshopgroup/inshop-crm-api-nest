@@ -18,8 +18,10 @@ export class UsersService {
     return this.usersRepository.save(user);
   }
 
-  findAll() {
-    return this.usersRepository.find({
+  findAll(take: number, skip: number) {
+    return this.usersRepository.findAndCount({
+      take,
+      skip,
       relations: {
         group: true,
       },

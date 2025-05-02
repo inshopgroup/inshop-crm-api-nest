@@ -18,8 +18,10 @@ export class GroupsService {
     return this.groupsRepository.save(group);
   }
 
-  findAll() {
-    return this.groupsRepository.find({
+  findAll(take: number, skip: number) {
+    return this.groupsRepository.findAndCount({
+      take,
+      skip,
       // relations: {
       //   roles: true,
       // },

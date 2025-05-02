@@ -7,6 +7,8 @@ import {
   Param,
   Delete,
   ValidationPipe,
+  DefaultValuePipe,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { GroupsService } from '../../services/groups.service';
 import { CreateGroupDto } from '../../dto/create-group.dto';
@@ -25,8 +27,11 @@ export class GroupsController {
   }
 
   @Get()
-  findAll() {
-    return this.groupsService.findAll();
+  findAll(
+    @Param('take', new DefaultValuePipe(30), new ParseIntPipe()) take: number,
+    @Param('skip', new DefaultValuePipe(0), new ParseIntPipe()) skip: number,
+  ) {
+    return this.groupsService.findAll(take, skip);
   }
 
   @Get(':id')

@@ -18,8 +18,10 @@ export class ModulesService {
     return this.modulesRepository.save(module);
   }
 
-  findAll() {
-    return this.modulesRepository.find({
+  findAll(take: number, skip: number) {
+    return this.modulesRepository.findAndCount({
+      take,
+      skip,
       relations: {
         roles: true,
       },

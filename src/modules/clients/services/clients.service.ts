@@ -18,8 +18,11 @@ export class ClientsService {
     return this.clientsRepository.save(client);
   }
 
-  findAll() {
-    return this.clientsRepository.find();
+  findAll(take: number, skip: number) {
+    return this.clientsRepository.findAndCount({
+      take,
+      skip,
+    });
   }
 
   findOne(id: number) {

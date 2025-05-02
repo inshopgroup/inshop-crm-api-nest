@@ -18,8 +18,11 @@ export class RolesService {
     return this.rolesRepository.save(role);
   }
 
-  findAll() {
-    return this.rolesRepository.find();
+  findAll(take: number, skip: number) {
+    return this.rolesRepository.findAndCount({
+      take,
+      skip,
+    });
   }
 
   findOne(id: number) {

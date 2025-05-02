@@ -7,6 +7,8 @@ import {
   Param,
   Delete,
   ValidationPipe,
+  DefaultValuePipe,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { UsersService } from '../../services/users.service';
 import { CreateUserDto } from '../../dto/create-user.dto';
@@ -25,8 +27,11 @@ export class UsersController {
   }
 
   @Get()
-  findAll() {
-    return this.usersService.findAll();
+  findAll(
+    @Param('take', new DefaultValuePipe(30), new ParseIntPipe()) take: number,
+    @Param('skip', new DefaultValuePipe(0), new ParseIntPipe()) skip: number,
+  ) {
+    return this.usersService.findAll(take, skip);
   }
 
   @Get(':id')

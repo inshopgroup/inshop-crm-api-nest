@@ -7,6 +7,8 @@ import {
   Param,
   Delete,
   ValidationPipe,
+  ParseIntPipe,
+  DefaultValuePipe,
 } from '@nestjs/common';
 import { ClientsService } from '../../services/clients.service';
 import { CreateClientDto } from '../../dto/create-client.dto';
@@ -25,8 +27,11 @@ export class ClientsController {
   }
 
   @Get()
-  findAll() {
-    return this.clientsService.findAll();
+  findAll(
+    @Param('take', new DefaultValuePipe(30), new ParseIntPipe()) take: number,
+    @Param('skip', new DefaultValuePipe(0), new ParseIntPipe()) skip: number,
+  ) {
+    return this.clientsService.findAll(take, skip);
   }
 
   @Get(':id')

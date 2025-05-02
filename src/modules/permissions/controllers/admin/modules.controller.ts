@@ -7,6 +7,8 @@ import {
   Param,
   Delete,
   ValidationPipe,
+  DefaultValuePipe,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { ModulesService } from '../../services/modules.service';
 import { CreateModuleDto } from '../../dto/create-module.dto';
@@ -25,8 +27,11 @@ export class ModulesController {
   }
 
   @Get()
-  findAll() {
-    return this.modulesService.findAll();
+  findAll(
+    @Param('take', new DefaultValuePipe(30), new ParseIntPipe()) take: number,
+    @Param('skip', new DefaultValuePipe(0), new ParseIntPipe()) skip: number,
+  ) {
+    return this.modulesService.findAll(take, skip);
   }
 
   @Get(':id')

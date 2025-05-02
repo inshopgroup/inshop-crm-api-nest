@@ -1,6 +1,7 @@
 import { Module } from '../entities/module.entity';
 import { IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { Exists } from '../../core/validators/exists.decorator';
 
 export class CreateRoleDto {
   @IsString()
@@ -11,6 +12,7 @@ export class CreateRoleDto {
   @ApiProperty()
   role: string;
 
+  @Exists(Module, { message: 'Module not exists' })
   @ApiProperty()
   module: Module;
 }

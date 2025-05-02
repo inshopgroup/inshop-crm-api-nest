@@ -7,8 +7,7 @@ import {
   Param,
   Delete,
   ValidationPipe,
-  DefaultValuePipe,
-  ParseIntPipe,
+  NotFoundException,
 } from '@nestjs/common';
 import { RolesService } from '../../services/roles.service';
 import { CreateRoleDto } from '../../dto/create-role.dto';
@@ -16,41 +15,61 @@ import { UpdateRoleDto } from '../../dto/update-role.dto';
 import { IdPipe } from '../../../core/transformers/id.pipe';
 import { ObjectPipe } from '../../../core/transformers/parse-object.pipe';
 import { Role } from '../../entities/role.entity';
+import { Module } from '../../entities/module.entity';
 
-@Controller('admin/roles')
+@Controller('admin/modules/:moduleId/roles')
 export class RolesController {
   constructor(private readonly rolesService: RolesService) {}
 
   @Post()
-  create(@Body(ValidationPipe) createRoleDto: CreateRoleDto) {
-    return this.rolesService.create(createRoleDto);
+  create(
+    @Param('moduleId', ObjectPipe(Module)) module: Module,
+    @Body(ValidationPipe) createRoleDto: CreateRoleDto,
+  ) {
+    return this.rolesService.create(module.id, createRoleDto);
   }
 
   @Get()
-  findAll(
-    @Param('take', new DefaultValuePipe(30), new ParseIntPipe()) take: number,
-    @Param('skip', new DefaultValuePipe(0), new ParseIntPipe()) skip: number,
-  ) {
-    return this.rolesService.findAll(take, skip);
+  findAll(@Param('moduleId', ObjectPipe(Module)) module: Module) {
+    return this.rolesService.findAll(module.id);
   }
 
   @Get(':id')
-  findOne(@Param('id', ObjectPipe(Role)) role: Role) {
+  findOne(
+    @Param('moduleId', ObjectPipe(Module)) module: Module,
+    @Param('id', ObjectPipe(Role, ['module'])) role: Role,
+  ) {
+    if (role.module.id !== module.id) {
+      throw new NotFoundException('Role not found');
+    }
+
     return role;
   }
 
   @Patch(':id')
   async update(
-    @Param('id', ObjectPipe(Role)) role: Role,
+    @Param('moduleId', ObjectPipe(Module)) module: Module,
+    @Param('id', ObjectPipe(Role, ['module'])) role: Role,
     @Body(IdPipe, ValidationPipe) updateRoleDto: UpdateRoleDto,
   ) {
+    if (role.module.id !== module.id) {
+      throw new NotFoundException('Role not found');
+    }
+
     await this.rolesService.update(role.id, updateRoleDto);
 
     return;
   }
 
   @Delete(':id')
-  async remove(@Param('id', ObjectPipe(Role)) role: Role) {
+  async remove(
+    @Param('moduleId', ObjectPipe(Module)) module: Module,
+    @Param('id', ObjectPipe(Role, ['module'])) role: Role,
+  ) {
+    if (role.module.id !== module.id) {
+      throw new NotFoundException('Role not found');
+    }
+
     await this.rolesService.remove(role.id);
 
     return;

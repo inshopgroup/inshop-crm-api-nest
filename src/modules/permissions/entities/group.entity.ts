@@ -1,4 +1,10 @@
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Role } from './role.entity';
 
 @Entity()
@@ -10,5 +16,6 @@ export class Group {
   name: string;
 
   @ManyToMany(() => Role, (role) => role.module)
+  @JoinTable({ name: 'groups_roles' })
   roles: Role[];
 }

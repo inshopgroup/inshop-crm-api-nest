@@ -35,7 +35,7 @@ export class GroupsController {
   }
 
   @Get(':id')
-  findOne(@Param('id', ObjectPipe(Group)) group: Group) {
+  findOne(@Param('id', ObjectPipe(Group, ['roles'])) group: Group) {
     return group;
   }
 

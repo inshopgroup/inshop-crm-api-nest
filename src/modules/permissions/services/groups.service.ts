@@ -22,18 +22,18 @@ export class GroupsService {
     return this.groupsRepository.findAndCount({
       take,
       skip,
-      // relations: {
-      //   roles: true,
-      // },
+      relations: {
+        roles: true,
+      },
     });
   }
 
   findOne(id: number) {
     return this.groupsRepository.findOne({
       where: { id },
-      // relations: {
-      //   roles: true,
-      // },
+      relations: {
+        roles: true,
+      },
     });
   }
 

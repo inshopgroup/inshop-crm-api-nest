@@ -8,6 +8,7 @@ import {
 import { Injectable, Type } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { InjectDataSource } from '@nestjs/typeorm';
+import { EntityIdType } from '../types/entity.type';
 
 @ValidatorConstraint({ async: true })
 @Injectable()
@@ -18,7 +19,7 @@ export class ExistsConstraint implements ValidatorConstraintInterface {
   ) {}
 
   async validate(
-    value: { id: number } | { id: number }[],
+    value: EntityIdType | EntityIdType[],
     args: ValidationArguments,
   ): Promise<boolean> {
     const [entity] = args.constraints as [Type<any>];

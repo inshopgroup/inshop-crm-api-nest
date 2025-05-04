@@ -7,7 +7,7 @@ import {
   ArgumentMetadata,
   Inject,
 } from '@nestjs/common';
-import EntityType from '../../clients/types/entity.type';
+import { EntityType } from '../types/entity.type';
 
 @Injectable({ scope: Scope.REQUEST })
 export class IdPipe implements PipeTransform {

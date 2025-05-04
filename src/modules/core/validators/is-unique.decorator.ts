@@ -9,7 +9,7 @@ import {
 import { Injectable, Type } from '@nestjs/common';
 import { DataSource, Not } from 'typeorm';
 import { InjectDataSource } from '@nestjs/typeorm';
-import EntityType from '../../clients/types/entity.type';
+import { EntityType } from '../types/entity.type';
 
 @ValidatorConstraint({ async: true })
 @Injectable()

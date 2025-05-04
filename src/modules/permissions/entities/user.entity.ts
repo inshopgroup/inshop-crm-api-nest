@@ -1,6 +1,13 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Group } from './group.entity';
 import { Exclude } from 'class-transformer';
+import * as bcrypt from 'bcrypt';
 
 @Entity()
 export class User {
@@ -22,4 +29,10 @@ export class User {
 
   @ManyToOne(() => Group, { nullable: false, eager: false })
   group: Group;
+
+  @BeforeInsert()
+  generatePasswordHash(): void {
+    const saltOrRounds = 10;
+    this.password = bcrypt.hashSync(this.password, saltOrRounds);
+  }
 }

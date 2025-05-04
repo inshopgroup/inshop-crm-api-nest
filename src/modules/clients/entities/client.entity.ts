@@ -1,6 +1,13 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Contact } from './contact.entity';
 import { Exclude } from 'class-transformer';
+import * as bcrypt from 'bcrypt';
 
 @Entity()
 export class Client {
@@ -22,4 +29,10 @@ export class Client {
 
   @OneToMany(() => Contact, (contact) => contact.client)
   contacts: Contact[];
+
+  @BeforeInsert()
+  generatePasswordHash(): void {
+    const saltOrRounds = 10;
+    this.password = bcrypt.hashSync(this.password, saltOrRounds);
+  }
 }

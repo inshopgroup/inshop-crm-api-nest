@@ -18,17 +18,29 @@ export class ExistsConstraint implements ValidatorConstraintInterface {
   ) {}
 
   async validate(
-    value: { id: number },
+    value: { id: number } | { id: number }[],
     args: ValidationArguments,
   ): Promise<boolean> {
     const [entity] = args.constraints as [Type<any>];
     const repository = this.dataSource.getRepository(entity);
 
-    const record: unknown = await repository.findOne({
-      where: { id: value.id },
-    });
+    if (!Array.isArray(value)) {
+      value = [value];
+    }
 
-    return !!record;
+    let exists = true;
+
+    for (const item of value) {
+      const record: unknown = await repository.findOne({
+        where: { id: item.id },
+      });
+
+      if (!record) {
+        exists = false;
+      }
+    }
+
+    return exists;
   }
 
   defaultMessage(validationArguments: ValidationArguments): string {

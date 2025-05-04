@@ -1,10 +1,10 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, PipeTransform } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 
 export const ObjectPipe = (entity: any, relations?: string[]) => {
   @Injectable()
-  class ParseObjectPipe {
+  class ParseObjectPipe implements PipeTransform {
     constructor(@InjectDataSource() public readonly dataSource: DataSource) {}
 
     async transform(id: string): Promise<any> {

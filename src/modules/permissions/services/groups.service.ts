@@ -38,7 +38,7 @@ export class GroupsService {
   }
 
   update(id: number, updateGroupDto: UpdateGroupDto) {
-    return this.groupsRepository.update(id, updateGroupDto);
+    return this.groupsRepository.save(updateGroupDto);
   }
 
   remove(id: number) {

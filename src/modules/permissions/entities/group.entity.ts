@@ -15,7 +15,7 @@ export class Group {
   @Column()
   name: string;
 
-  @ManyToMany(() => Role, (role) => role.module)
+  @ManyToMany(() => Role, (role) => role.groups)
   @JoinTable({ name: 'groups_roles' })
   roles: Role[];
 }

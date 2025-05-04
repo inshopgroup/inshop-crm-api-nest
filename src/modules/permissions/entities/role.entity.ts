@@ -24,6 +24,5 @@ export class Role {
   module: Module;
 
   @ManyToMany(() => Group, (group) => group.roles)
-  @JoinTable()
   groups: Group[];
 }

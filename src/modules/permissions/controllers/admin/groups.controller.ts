@@ -9,6 +9,7 @@ import {
   ValidationPipe,
   DefaultValuePipe,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { GroupsService } from '../../services/groups.service';
 import { CreateGroupDto } from '../../dto/create-group.dto';
@@ -16,7 +17,9 @@ import { UpdateGroupDto } from '../../dto/update-group.dto';
 import { IdPipe } from '../../../core/transformers/id.pipe';
 import { ObjectPipe } from '../../../core/transformers/parse-object.pipe';
 import { Group } from '../../entities/group.entity';
+import { AuthAdminGuard } from '../../guards/authAdmin.guard';
 
+@UseGuards(AuthAdminGuard)
 @Controller('admin/groups')
 export class GroupsController {
   constructor(private readonly groupsService: GroupsService) {}

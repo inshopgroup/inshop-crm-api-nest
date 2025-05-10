@@ -9,6 +9,7 @@ import {
   ValidationPipe,
   DefaultValuePipe,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { ModulesService } from '../../services/modules.service';
 import { CreateModuleDto } from '../../dto/create-module.dto';
@@ -16,7 +17,9 @@ import { UpdateModuleDto } from '../../dto/update-module.dto';
 import { IdPipe } from '../../../core/transformers/id.pipe';
 import { ObjectPipe } from '../../../core/transformers/parse-object.pipe';
 import { Module as ModuleEntity } from '../../../permissions/entities/module.entity';
+import { AuthAdminGuard } from '../../guards/authAdmin.guard';
 
+@UseGuards(AuthAdminGuard)
 @Controller('admin/modules')
 export class ModulesController {
   constructor(private readonly modulesService: ModulesService) {}

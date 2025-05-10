@@ -8,6 +8,7 @@ import {
   Delete,
   ValidationPipe,
   NotFoundException,
+  UseGuards,
 } from '@nestjs/common';
 import { RolesService } from '../../services/roles.service';
 import { CreateRoleDto } from '../../dto/create-role.dto';
@@ -16,7 +17,9 @@ import { IdPipe } from '../../../core/transformers/id.pipe';
 import { ObjectPipe } from '../../../core/transformers/parse-object.pipe';
 import { Role } from '../../entities/role.entity';
 import { Module } from '../../entities/module.entity';
+import { AuthAdminGuard } from '../../guards/authAdmin.guard';
 
+@UseGuards(AuthAdminGuard)
 @Controller('admin/modules/:moduleId/roles')
 export class RolesController {
   constructor(private readonly rolesService: RolesService) {}

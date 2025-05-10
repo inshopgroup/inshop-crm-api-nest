@@ -8,6 +8,7 @@ import * as process from 'node:process';
 import { IsUniqueConstraint } from './modules/core/validators/is-unique.decorator';
 import { IdPipe } from './modules/core/transformers/id.pipe';
 import { ExistsConstraint } from './modules/core/validators/exists.decorator';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -26,6 +27,11 @@ import { ExistsConstraint } from './modules/core/validators/exists.decorator';
       database: process.env.DATABASE_NAME,
       synchronize: !!process.env.DATABASE_SYNCHRONIZE,
       autoLoadEntities: true,
+    }),
+    JwtModule.register({
+      global: true,
+      secret: config().jwtSecret,
+      signOptions: { expiresIn: '3600s' },
     }),
   ],
   controllers: [],

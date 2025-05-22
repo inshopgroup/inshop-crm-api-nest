@@ -10,6 +10,7 @@ import {
   ParseIntPipe,
   DefaultValuePipe,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { ClientsService } from '../../services/clients.service';
 import { CreateClientDto } from '../../dto/create-client.dto';
@@ -18,6 +19,7 @@ import { IdPipe } from '../../../core/transformers/id.pipe';
 import { Client } from '../../entities/client.entity';
 import { ObjectPipe } from '../../../core/transformers/parse-object.pipe';
 import { AuthAdminGuard } from '../../../permissions/guards/authAdmin.guard';
+import { ApiQuery } from '@nestjs/swagger';
 
 @UseGuards(AuthAdminGuard)
 @Controller('admin/clients')
@@ -30,9 +32,9 @@ export class ClientsController {
   }
 
   @Get()
-  findAll(
-    @Param('take', new DefaultValuePipe(30), new ParseIntPipe()) take: number,
-    @Param('skip', new DefaultValuePipe(0), new ParseIntPipe()) skip: number,
+  async findAll(
+    @Query('take', new DefaultValuePipe(30), new ParseIntPipe()) take: number,
+    @Query('skip', new DefaultValuePipe(0), new ParseIntPipe()) skip: number,
   ) {
     return this.clientsService.findAll(take, skip);
   }

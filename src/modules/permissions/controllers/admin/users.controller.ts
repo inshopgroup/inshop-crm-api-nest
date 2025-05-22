@@ -10,6 +10,7 @@ import {
   DefaultValuePipe,
   ParseIntPipe,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { UsersService } from '../../services/users.service';
 import { CreateUserDto } from '../../dto/create-user.dto';
@@ -31,8 +32,8 @@ export class UsersController {
 
   @Get()
   findAll(
-    @Param('take', new DefaultValuePipe(30), new ParseIntPipe()) take: number,
-    @Param('skip', new DefaultValuePipe(0), new ParseIntPipe()) skip: number,
+    @Query('take', new DefaultValuePipe(30), new ParseIntPipe()) take: number,
+    @Query('skip', new DefaultValuePipe(0), new ParseIntPipe()) skip: number,
   ) {
     return this.usersService.findAll(take, skip);
   }

@@ -22,9 +22,9 @@ export class GroupsService {
     return this.groupsRepository.findAndCount({
       take,
       skip,
-      relations: {
-        roles: true,
-      },
+      // relations: {
+      //   roles: true,
+      // },
     });
   }
 

@@ -22,9 +22,9 @@ export class ModulesService {
     return this.modulesRepository.findAndCount({
       take,
       skip,
-      relations: {
-        roles: true,
-      },
+      // relations: {
+      //   roles: true,
+      // },
     });
   }
 
